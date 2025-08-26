@@ -1,11 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Buy Me Coffee with Ethereum</title>
+    <script src="./index-js.js" type="module"></script>
 </head>
+
 <body>
-    
+    <button id="connect_wallet">Connect Wallet</button>
+    <button id="get_balance">Get Balance</button>
+    <form id="buy_Coffee">
+        <label>Eth Amount</label>
+        <input type="number" id="ethAmount" step="any" placeholder="0.1" />
+        <button type="button" id="fundButton">Buy Coffee</button>
+    </form>
 </body>
+
 </html>
