@@ -1,0 +1,231 @@
+:root {
+  --bg: #0b0d12;
+  --bg-elev: #12151d;
+  --card: #151926;
+  --card-2: #1a2030;
+  --text: #e6e8ef;
+  --text-dim: #a8afc2;
+  --accent: #7c5cff;
+  --accent-2: #4cc9f0;
+  --ok: #2dd4bf;
+  --err: #f87171;
+  --muted: #3b435a;
+  --border: #22283a;
+  --shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+
+:root[data-theme="light"] {
+  --bg: #f7f8fb;
+  --bg-elev: #ffffff;
+  --card: #ffffff;
+  --card-2: #f2f4f8;
+  --text: #0e1020;
+  --text-dim: #4a536b;
+  --accent: #6d4aff;
+  --accent-2: #2b8ef5;
+  --ok: #16a34a;
+  --err: #dc2626;
+  --muted: #d7dbea;
+  --border: #e6e8f2;
+  --shadow: 0 10px 25px rgba(0,0,0,.08);
+}
+
+/* Base */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font: 15px/1.45 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+  color: var(--text);
+  background: radial-gradient(1200px 600px at -10% -10%, rgba(124,92,255,.15), transparent 60%),
+              radial-gradient(1000px 400px at 110% 10%, rgba(76,201,240,.15), transparent 60%),
+              var(--bg);
+}
+
+/* App container */
+.app {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 20px 80px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(180deg, var(--bg-elev), transparent);
+  position: sticky;
+  top: 0;
+  padding: 10px 4px 14px;
+  backdrop-filter: blur(6px);
+  z-index: 20;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; }
+.logo {
+  display: grid; place-items: center;
+  width: 42px; height: 42px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: white; font-size: 22px;
+  box-shadow: var(--shadow);
+}
+.title h1 { margin: 0; font-size: 1.25rem; letter-spacing: .3px; }
+.subtitle { margin: 2px 0 0; color: var(--text-dim); font-size: .9rem; }
+
+.header-actions { display: flex; align-items: center; gap: 10px; }
+
+/* Buttons */
+.btn {
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform .08s ease, background .2s ease, border-color .2s ease, opacity .2s;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); opacity: .95; }
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border-color: transparent;
+  color: white;
+  box-shadow: var(--shadow);
+}
+.btn-secondary {
+  background: var(--card-2);
+}
+.btn-ghost {
+  background: transparent;
+}
+.btn-full { width: 100%; }
+
+/* Info grid */
+.info-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 18px 0 22px;
+}
+@media (max-width: 860px) {
+  .info-grid { grid-template-columns: 1fr; }
+}
+
+.info-card {
+  background: linear-gradient(180deg, var(--card), var(--card-2));
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 14px 16px;
+}
+.info-title { color: var(--text-dim); font-size: .85rem; margin-bottom: 8px; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; word-break: break-all; color: var(--text); }
+.balance { font-weight: 700; font-size: 1.35rem; }
+.unit { color: var(--text-dim); margin-left: 6px; font-weight: 500; }
+.inline-actions { margin-top: 10px; }
+
+/* Badges */
+.badges { display: flex; gap: 8px; flex-wrap: wrap; }
+.badge {
+  background: var(--card-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: .8rem;
+}
+.badge-muted { opacity: .7; }
+
+/* Main cards */
+.grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+@media (max-width: 1100px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 760px) {
+  .grid { grid-template-columns: 1fr; }
+}
+.card {
+  background: linear-gradient(180deg, var(--card), var(--card-2));
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+.card-title {
+  margin: 0 0 6px;
+  font-size: 1.2rem;
+}
+.card-subtitle {
+  margin: 0 0 16px;
+  color: var(--text-dim);
+}
+
+/* Fields */
+.field { display: grid; gap: 8px; margin-bottom: 14px; }
+.field-label { color: var(--text-dim); }
+.field-input input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+  color: var(--text);
+  outline: none;
+}
+.field-input input:focus {
+  border-color: var(--accent-2);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--accent-2) 30%, transparent);
+}
+
+/* Activity */
+.activity { display: grid; gap: 10px; }
+.empty { color: var(--text-dim); }
+.tx {
+  display: grid; gap: 6px;
+  padding: 12px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.tx .row { display: flex; justify-content: space-between; gap: 10px; }
+.tx .k { color: var(--text-dim); }
+.tx .v { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono"; }
+
+/* Toast */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  border-radius: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-4px);
+}
+.toast.ok { border-color: color-mix(in oklch, var(--ok) 40%, var(--border)); }
+.toast.err { border-color: color-mix(in oklch, var(--err) 40%, var(--border)); }
+
+/* Footer */
+.footer {
+  margin-top: 26px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--border);
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+  gap: 10px;
+  color: var(--text-dim);
+}
+.link { color: var(--accent-2); text-decoration: none; }
+.link:hover { text-decoration: underline; }

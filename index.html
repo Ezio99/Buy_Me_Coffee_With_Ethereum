@@ -1,22 +1,138 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <title>Buy Me a Coffee ☕ — Ethereum</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="/src/index-ts.ts" type="module"></script>
+  </head>
+  <body>
+    <div class="app">
+      <!-- Header -->
+      <header class="header">
+        <div class="brand">
+          <span class="logo">☕</span>
+          <div class="title">
+            <h1>Buy Me a Coffee</h1>
+            <p class="subtitle">Support with a small ETH tip</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button id="connect_wallet" class="btn btn-primary">
+            Connect Wallet
+          </button>
+          <button id="themeToggle" class="btn btn-ghost" aria-label="Toggle theme">
+            🌓
+          </button>
+        </div>
+      </header>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buy Me Coffee with Ethereum</title>
-    <script src="./dist/index-ts.js" type="module"></script>
-</head>
+      <!-- Contract + network info -->
+      <section class="info-grid">
+        <div class="info-card">
+          <div class="info-title">Contract</div>
+          <div class="mono" id="contractAddressText">
+            <!-- fill this via JS if you want -->
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-title">Network</div>
+          <div class="badges">
+            <span id="networkName" class="badge">Unknown</span>
+            <span id="accountBadge" class="badge badge-muted">Not Connected</span>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-title">Contract Balance</div>
+          <div class="balance">
+            <span id="contractBalance">—</span> <span class="unit">ETH</span>
+          </div>
+          <div class="inline-actions">
+            <button id="getBalanceButton" class="btn btn-ghost">Refresh</button>
+          </div>
+        </div>
+      </section>
 
-<body>
-    <button id="connect_wallet">Connect Wallet</button>
-    <button id="get_balance">Get Balance</button>
-    <button id="withdraw">Withdraw</button>
-    <form id="buy_Coffee">
-        <label>Eth Amount</label>
-        <input type="number" id="ethAmount" step="any" placeholder="0.1" />
-        <button type="button" id="fundButton">Buy Coffee</button>
-    </form>
-</body>
+      <!-- Actions -->
+      <main class="grid">
+        <!-- Buy Coffee -->
+        <article class="card">
+          <h2 class="card-title">Buy a Coffee</h2>
+          <p class="card-subtitle">Send ETH to support the creator.</p>
 
+          <label class="field">
+            <span class="field-label">Amount (ETH)</span>
+            <div class="field-input">
+              <input id="ethAmount" type="number" step="0.0001" min="0" placeholder="0.001" />
+            </div>
+          </label>
+
+          <button id="fundButton" class="btn btn-primary btn-full">Send</button>
+
+          <div class="hint">
+            Gas fees apply. Testnets are welcome ☺
+          </div>
+        </article>
+
+        <!-- Withdraw -->
+        <article class="card">
+          <h2 class="card-title">Withdraw</h2>
+          <p class="card-subtitle">Only contract owner can withdraw.</p>
+          <button id="withdrawButton" class="btn btn-secondary btn-full">Withdraw to Owner</button>
+          <div class="hint">
+            Owner-only action. Will revert otherwise.
+          </div>
+        </article>
+
+        <!-- Activity -->
+        <article class="card">
+          <h2 class="card-title">Activity</h2>
+          <div id="activity" class="activity">
+            <div class="empty">No transactions yet.</div>
+          </div>
+        </article>
+      </main>
+
+      <!-- Toasts -->
+      <div id="toast" class="toast"></div>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <span>Built with ❤️ using viem + Vite</span>
+        <a class="link" href="https://github.com/Ezio99/Buy_Me_Coffee_With_Ethereum" target="_blank" rel="noreferrer">
+          View on GitHub
+        </a>
+      </footer>
+    </div>
+
+    <!-- Your scripts; keep as-is -->
+    <!-- <script type="module" src="/src/main.ts"></script> OR -->
+
+
+    <script>
+      // Optional: minimal theme toggle (no framework)
+      const root = document.documentElement;
+      const themeBtn = document.getElementById("themeToggle");
+      const stored = localStorage.getItem("theme") || "dark";
+      root.setAttribute("data-theme", stored);
+      themeBtn?.addEventListener("click", () => {
+        const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        root.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
+      });
+
+      // Optional: tiny toast helper (use in your JS: window.toast('message', 'ok'|'err'))
+      const toastEl = document.getElementById("toast");
+      window.toast = (msg, mode = "ok") => {
+        if (!toastEl) return;
+        toastEl.textContent = msg;
+        toastEl.className = `toast show ${mode}`;
+        setTimeout(() => toastEl.className = "toast", 2400);
+      };
+    </script>
+  </body>
 </html>

@@ -26,23 +26,27 @@ declare global {
 const connectButton = document.getElementById("connect_wallet") as HTMLButtonElement | null;
 const fundButton = document.getElementById("fundButton") as HTMLButtonElement | null;
 const fundingAmount = document.getElementById("ethAmount") as HTMLInputElement | null;
-const balanceButton = document.getElementById("get_balance") as HTMLButtonElement | null;
-const withdrawButton = document.getElementById("withdraw") as HTMLButtonElement | null;
+const balanceButton = document.getElementById("getBalanceButton") as HTMLButtonElement | null;
+const withdrawButton = document.getElementById("withdrawButton") as HTMLButtonElement | null;
+(document.getElementById("contractAddressText") as HTMLElement).textContent = contractAddress;
 
 // --- Clients & state ---
 let walletClient: WalletClient | undefined;
 let connectedAccount: Address | undefined;
+let currentChain: Chain | undefined;
 
 // Reads/simulations: talk directly to Anvil (adjust URL if needed)
 const RPC_URL = "http://localhost:8545";
 const publicClient = createPublicClient({ transport: http(RPC_URL) });
+
+
 
 // --- Helpers ---
 async function getCurrentChain(client: WalletClient): Promise<Chain> {
   const chainId = await client.getChainId();
   return defineChain({
     id: chainId,
-    name: "Custom Chain",
+    name: "Local Chain",
     nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
     rpcUrls: { default: { http: [RPC_URL] } },
   });
@@ -68,6 +72,13 @@ async function connect(): Promise<void> {
   const accounts = await walletClient.requestAddresses();
   connectedAccount = accounts[0] as Address;
 
+  (document.getElementById("accountBadge") as HTMLElement).textContent =
+    connectedAccount.slice(0, 6) + "…" + connectedAccount.slice(-4);
+
+  currentChain = await getCurrentChain(walletClient);
+  (document.getElementById("networkName") as HTMLElement).textContent = currentChain.name
+
+
   btn.innerHTML = "Connected!";
   console.log(`Connected account ${connectedAccount}`);
 }
@@ -88,8 +99,6 @@ async function fundContract(): Promise<void> {
   const valueWei = parseEther(ethAmountStr);
   console.log(`Funding contract with ${ethAmountStr} ETH...`);
   console.log(`Funding contract with ${valueWei} wei...`);
-
-  const currentChain = await getCurrentChain(walletClient);
 
   // Simulate first
   const { request } = await publicClient.simulateContract({
@@ -114,6 +123,7 @@ async function fundContract(): Promise<void> {
 async function getBalance(): Promise<void> {
   const bal = await publicClient.getBalance({ address: contractAddress as Address });
   console.log(`Current contract balance - ${formatEther(bal)} ETH`);
+  (document.getElementById("contractBalance") as HTMLElement).textContent = formatEther(bal);
 }
 
 async function withdraw(): Promise<void> {
@@ -125,7 +135,6 @@ async function withdraw(): Promise<void> {
     throw new Error("Wallet not connected");
   }
 
-  const currentChain = await getCurrentChain(walletClient);
   console.log(`Attempting to withdraw funds with wallet ${connectedAccount}`);
 
   const { request } = await publicClient.simulateContract({
@@ -147,5 +156,9 @@ async function withdraw(): Promise<void> {
 // --- Wire up buttons safely ---
 requireElement(connectButton, "connect_wallet").onclick = () => void connect();
 requireElement(fundButton, "fundButton").onclick = () => void fundContract();
-requireElement(balanceButton, "get_balance").onclick = () => void getBalance();
-requireElement(withdrawButton, "withdraw").onclick = () => void withdraw();
+requireElement(balanceButton, "getBalanceButton").onclick = () => void getBalance();
+requireElement(withdrawButton, "withdrawButton").onclick = () => void withdraw();
+
+
+
+
