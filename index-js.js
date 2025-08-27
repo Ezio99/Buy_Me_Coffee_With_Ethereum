@@ -9,6 +9,7 @@ const connectButton = document.getElementById("connect_wallet")
 const fundButton = document.getElementById("fundButton")
 const fundingAmount = document.getElementById("ethAmount")
 const balanceButton = document.getElementById("get_balance")
+const withdrawButton = document.getElementById("withdraw")
 
 let walletClient
 let connectedAccount
@@ -66,6 +67,9 @@ async function fundContract() {
     console.log(request)
 
     const hash = await walletClient.writeContract(request)
+    // Waits for the Transaction to be included on a Block (one confirmation), and then returns the Transaction Receipt. If the Transaction reverts, then the action will throw an error.
+    const receipt = await publicClient.waitForTransactionReceipt({ hash });
+    console.log(receipt)
     console.log(`Txn hash -  ${hash}`)
 
 
@@ -102,10 +106,38 @@ async function getBalance() {
 
     console.log(`Current contract balance - ${formatEther(balance)}`)
     console.log(formatEther(balance))
+}
 
+async function withdraw(){
+    if (!walletClient) {
+        console.log("Attempting to auto-connect to wallet")
+        await connect()
+    }
 
+        let publicClient = createPublicClient({
+        transport: custom(window.ethereum)
+    })
 
+    const currentChain = await getCurrentChain(walletClient)
 
+    console.log(`Attempting to withdraw funds with wallet ${connectedAccount}`)
+
+    //Simulate calling contract, if it passes we actually call the contract
+    const { request } = await publicClient.simulateContract({
+        address: contractAddress,
+        abi: coffeeAbi,
+        functionName: "cheaperWithdraw",
+        account: connectedAccount,
+        chain: currentChain,
+        value:0,
+    })
+
+    console.log(request)
+
+    const hash = await walletClient.writeContract(request)
+    const receipt = await publicClient.waitForTransactionReceipt({ hash });
+    console.log(receipt)
+    console.log(`Txn hash -  ${hash}`)
 }
 
 // Here, you are calling connect() right away when this line of code runs.
@@ -115,7 +147,7 @@ async function getBalance() {
 connectButton.onclick = connect
 fundButton.onclick = fundContract
 balanceButton.onclick = getBalance
-
+withdrawButton.onclick = withdraw
 
 
 

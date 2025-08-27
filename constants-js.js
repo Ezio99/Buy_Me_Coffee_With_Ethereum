@@ -1,9 +1,10 @@
 // export is essentially “make this accessible outside the file”, just like public/external means “make this accessible outside the class/contract”.
 //This is a named export
 //Local anvil address
-export const contractAddress = "0xE8C6F6A4870bf873d8624192058336a99f850FEC"
+export const contractAddress = "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0"
 
 // abi of FundMe contract
+//Generated using - forge inspect src/FundMe.sol abi --json (or get it from the generated out file)
 export const coffeeAbi = [
         {
             "type": "constructor",
